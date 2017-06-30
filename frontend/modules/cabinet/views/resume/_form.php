@@ -67,18 +67,21 @@ use yii\jui\DatePicker;
                         <?= $form->field($model, 'description[]')->textarea(['rows' => true, 'value' => $description]) ?>
                         <div class="row">
                             <div class="col-xs-6 col-sm-2">
-                                <?= $form->field($model, "dateJobTo[$i]")->widget(DatePicker::classname(), [
-                                    'dateFormat' => 'y-MM-dd',
-                                    'options' => ['class' => 'datepicker form-control'],
-                                    'clientOptions' => [
-                                        'yearRange' => '2000:2016',
-                                        'changeMonth' => 'true',
-                                        'changeYear' => 'true',
-                                        'firstDay' => '1',
-                                    ]]) ?>
+                                <?= $form->field($model, "dateJobTo[$i]")
+                                    ->textInput(['value' => $dateJobTo, 'class' => 'datepicker form-control', 'maxlength' => true])
+                                    ->widget(DatePicker::classname(), [
+                                        //'options' => ['dateFormat' => 'y-MM-dd'],
+                                        'options' => ['class' => 'dpcls'],
+                                        'dateFormat' => 'yyyy-MM-dd',
+                                        ]) ?>
                             </div>
                             <div class="col-xs-6 col-sm-2">
-                                <?= $form->field($model, 'dateJobFrom[]')->textInput(['value' => $dateJobFrom,'class' => 'datepicker form-control','maxlength' => true]) ?>
+                                <?= $form->field($model, "dateJobFrom[$i]")
+                                    ->textInput(['value' => $dateJobFrom, 'class' => 'datepicker form-control', 'maxlength' => true])
+                                    ->widget(DatePicker::classname(), [
+                                        'options' => ['class' => 'dpcls'],
+                                        'dateFormat' => 'yyyy-MM-dd',
+                                        ]) ?>
                             </div>
                             <hr>
                         </div>
@@ -93,9 +96,10 @@ use yii\jui\DatePicker;
                     <?= $form->field($model, 'description[]')->textarea(['rows' => true]) ?>
                     <div class="row">
                         <div class="col-xs-6 col-sm-2">
-                            <?= $form->field($model, "dateJobTo[]")->widget(DatePicker::classname(), [
-                                'dateFormat' => 'y-MM-dd',
-                                'options' => ['class' => ''],
+                            <?= $form->field($model, "dateJobTo[]")
+                                ->textInput(['class' => 'datepicker form-control', 'maxlength' => true])
+                                ->widget(DatePicker::classname(), [
+                                'options' => ['dateFormat' => 'yyyy-MM-dd'],
                                 'clientOptions' => [
                                     'yearRange' => '2000:2016',
                                     'changeMonth' => 'true',
@@ -104,13 +108,32 @@ use yii\jui\DatePicker;
                                 ]]) ?>
                         </div>
                         <div class="col-xs-6 col-sm-2">
-                            <?= $form->field($model, 'dateJobFrom[]')->textInput(['class' => 'datepicker form-control','maxlength' => true]) ?>
+                            <?= $form->field($model, 'dateJobFrom[]')
+                                ->textInput(['class' => 'datepicker form-control', 'maxlength' => true])
+                                ->widget(DatePicker::classname(), [
+                                    'options' => ['dateFormat' => 'yyyy-MM-dd'],
+                                    'clientOptions' => [
+                                        'yearRange' => '2000:2016',
+                                        'changeMonth' => 'true',
+                                        'changeYear' => 'true',
+                                        'firstDay' => '1',
+                                    ]]) ?>
                         </div>
                         <hr>
                     </div>
                 </div>
                 <?php
             }
+
+            $script = "
+                parent = $(this).parent().find(\".root\");
+                block = parent.children(\"div.block\");
+                dp = block.find(\".datepicker:last\");
+                dp.datepicker(\"option\", \"dateFormat\", \"dd-mm-y\" ).val();
+            ";
+            //маркер конца строки, обязательно сразу, без пробелов и табуляции
+            $this->registerJs($script, yii\web\View::POS_END);
+
             ?>
         </div>
         <?= Html::button("Add block", ['class' => 'bnt btn-primary add']) ?>
