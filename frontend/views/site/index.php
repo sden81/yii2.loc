@@ -13,7 +13,7 @@ $this->title = 'Home';
             <div class="relative">
                 <i class="fa fa-globe ic-fade-globe"></i>
                 <!-- form search -->
-                <?php $form = ActiveForm::begin(['id' => 'find-job-form']); ?>
+                <?php $form = ActiveForm::begin(['id' => 'form-search', 'action'=>['site/find']]); ?>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">

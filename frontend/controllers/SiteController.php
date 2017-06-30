@@ -132,9 +132,15 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
+
+    public function actionFind()
+    {
+        if (Yii::$app->request->isPost)
+            print_r ($_POST);
+    }
+
 
     /**
      * Displays contact page.
@@ -188,6 +194,11 @@ class SiteController extends Controller
         return $this->render('signup', [
             'model' => $model,
         ]);
+    }
+
+    public function actionTest()
+    {
+        print yii::$app->user->id;
     }
 
     /**

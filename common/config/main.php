@@ -18,21 +18,13 @@ return [
             ],
         ],
 
+        'db' => require (dirname(__DIR__).'/config/db.php'),
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'enableStrictParsing' => true,
+            'enableStrictParsing' => false,
             'rules' => [
-                [
-                    'pattern' => '',
-                    'route' => 'site/index',
-                    'suffix' => ''
-                ],
-                [
-                    'pattern' => '<controller>/<action>',
-                    'route' => '<controller>/<action>',
-                    'suffix' => ''
-                ],
             ],
         ],
     ],

@@ -4,35 +4,56 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
             <ul class="nav navbar-nav">
-                <li class=""><a href="job_list.html" ><strong>Find a Job</strong></a></li>
-                <li class=""><a href="resume_list.html" ><strong>Find Resumes</strong></a></li>
-                <li  class=""><a href="job_post_1.html" ><strong>Post a Job</strong></a></li>
+                <li class=""><a href="job_list.html"><strong>Find a Job</strong></a></li>
+                <li class=""><a href="resume_list.html"><strong>Find Resumes</strong></a></li>
+                <li class=""><a href="job_post_1.html"><strong>Post a Job</strong></a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" >Pages <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Pages <span
+                            class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="about.html" >About Us</a></li>
-                        <li><a href="contact.html" >Contact Us</a></li>
-                        <li><a href="blog.html" >Articles &amp; Blog</a></li>
-                        <li><a href="terms_privacy.html" >Terms &amp; Privacy</a></li>
-                        <li><a href="error_404.html" >Error 404</a></li>
-                        <li><a href="shortcode.html" >Short Code</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="blog.html">Articles &amp; Blog</a></li>
+                        <li><a href="terms_privacy.html">Terms &amp; Privacy</a></li>
+                        <li><a href="error_404.html">Error 404</a></li>
+                        <li><a href="shortcode.html">Short Code</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" >Features <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Features <span
+                            class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="job_list.html" >Find a Job</a></li>
-                        <li><a href="job_details.html" >Job Details</a></li>
-                        <li><a href="resume_list.html" >Find Resumes</a></li>
-                        <li><a href="resume_details.html" >Resume Details</a></li>
-                        <li><a href="job_post_2.html" >Post a Job</a></li>
-                        <li><a href="company_page.html" >Company Profile</a></li>
+                        <li><a href="job_list.html">Find a Job</a></li>
+                        <li><a href="job_details.html">Job Details</a></li>
+                        <li><a href="resume_list.html">Find Resumes</a></li>
+                        <li><a href="resume_details.html">Resume Details</a></li>
+                        <li><a href="job_post_2.html">Post a Job</a></li>
+                        <li><a href="company_page.html">Company Profile</a></li>
                     </ul>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="link-btn"><a href="<?= \yii\helpers\url::toRoute(["site/login"])?>" ><span class="btn btn-theme btn-pill btn-xs btn-line">Login</span></a></li>
-                <li class="link-btn"><a href="<?= \yii\helpers\url::to(['site/signup'])?>" ><span class="btn btn-theme  btn-pill btn-xs btn-line">Register</span></a></li>
+                <?php
+                if (Yii::$app->user->isGuest) {
+                    ?>
+                    <li class="link-btn"><a href="<?= \yii\helpers\url::toRoute(["site/login"]) ?>"><span
+                                class="btn btn-theme btn-pill btn-xs btn-line">Login</span></a></li>
+                    <li class="link-btn"><a href="<?= \yii\helpers\url::to(['site/signup']) ?>"><span
+                                class="btn btn-theme  btn-pill btn-xs btn-line">Register</span></a></li>
+                    <?php
+                } else { ?>
+                    <li class="dropdown">
+                        <a href="#" class="link-profile dropdown-toggle"  data-toggle="dropdown" >
+                            <img src="/images/people/4.jpg"  alt="" class="img-profile"> <?= Yii::$app->user->identity->username ?> <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="<?= \yii\helpers\url::toRoute("/cabinet/jobs") ?>" > My Jobs </a></li>
+                            <li><a href="<?= \yii\helpers\url::toRoute("/cabinet/resume") ?>" > My Resumes </a></li>
+                            <li><a href="change_password.html" > Change Password</a></li>
+                        </ul>
+                    </li>
+                    <li class="link-btn"><a href="<?= \yii\helpers\url::toRoute("/site/logout") ?>" data-method="post"><span class="btn btn-theme  btn-pill btn-xs btn-line">Logout</span></a></li>
+                <?php } ?>
             </ul>
         </div>
     </div>
@@ -53,31 +74,33 @@
             </a>
 
             <ul class="nav navbar-nav">
-                <li class=""><a href="job_list.html" ><strong>Find a Job</strong></a></li>
-                <li class=""><a href="resume_list.html" ><strong>Find Resumes</strong></a></li>
-                <li  class=""><a href="job_post_1.html" ><strong>Post a Job</strong></a></li>
-                <li><a href="login.html" ><strong>Login</strong></a></li>
-                <li><a href="register.html" ><strong>Register</strong></a></li>
+                <li class=""><a href="job_list.html"><strong>Find a Job</strong></a></li>
+                <li class=""><a href="resume_list.html"><strong>Find Resumes</strong></a></li>
+                <li class=""><a href="job_post_1.html"><strong>Post a Job</strong></a></li>
+                <li><a href="login.html"><strong>Login</strong></a></li>
+                <li><a href="register.html"><strong>Register</strong></a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" >Pages <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Pages <span
+                            class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="about.html" >About Us</a></li>
-                        <li><a href="contact.html" >Contact Us</a></li>
-                        <li><a href="blog.html" >Articles &amp; Blog</a></li>
-                        <li><a href="terms_privacy.html" >Terms &amp; Privacy</a></li>
-                        <li><a href="error_404.html" >Error 404</a></li>
-                        <li><a href="shortcode.html" >Short Code</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="blog.html">Articles &amp; Blog</a></li>
+                        <li><a href="terms_privacy.html">Terms &amp; Privacy</a></li>
+                        <li><a href="error_404.html">Error 404</a></li>
+                        <li><a href="shortcode.html">Short Code</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" >Features <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Features <span
+                            class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="job_list.html" >Find a Job</a></li>
-                        <li><a href="job_details.html" >Job Details</a></li>
-                        <li><a href="resume_list.html" >Find Resumes</a></li>
-                        <li><a href="resume_details.html" >Resume Details</a></li>
-                        <li><a href="job_post_2.html" >Post a Job</a></li>
-                        <li><a href="company_page.html" >Company Profile</a></li>
+                        <li><a href="job_list.html">Find a Job</a></li>
+                        <li><a href="job_details.html">Job Details</a></li>
+                        <li><a href="resume_list.html">Find Resumes</a></li>
+                        <li><a href="resume_details.html">Resume Details</a></li>
+                        <li><a href="job_post_2.html">Post a Job</a></li>
+                        <li><a href="company_page.html">Company Profile</a></li>
                     </ul>
                 </li>
             </ul>
