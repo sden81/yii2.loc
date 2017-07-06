@@ -84,6 +84,8 @@ class Resume extends \yii\db\ActiveRecord
     {
         $tmp = $this->$var;
         $tmp = $tmp ?? array_map(function ($row) use ($relationField, $appendix_for_date) {
+                //в базе дата начала и окончания перечислены черех пробел
+                //$appendix_for_date['разделитель','индекс']
                 if ($appendix_for_date === null)
                     return $row->$relationField;
                 $tmp_array = explode($appendix_for_date[0], $row->$relationField);
