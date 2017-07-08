@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "jobs".
@@ -22,9 +23,9 @@ use Yii;
  */
 class Jobs extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
+    public $categories;
+
     public static function tableName()
     {
         return 'jobs';
@@ -41,6 +42,11 @@ class Jobs extends \yii\db\ActiveRecord
             [['company_name'], 'string', 'max' => 50],
             [['title', 'location'], 'string', 'max' => 100],
         ];
+    }
+
+    public function behaviors()
+    {
+        return [TimestampBehavior::className(),];
     }
 
     /**
@@ -62,6 +68,25 @@ class Jobs extends \yii\db\ActiveRecord
         ];
     }
 
+    protected function loadData(string $var, array $relation, string $relationField)
+    {
+        $tmp = $this->$var;
+        $tmp = $tmp ?? array_map(function ($row) use ($relationField) {
+                    return $row->$relationField;
+            }, $relation);
+        return $tmp;
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        if (!$this->isNewRecord && !Yii::$app->request->isPost) {
+            $catsRealation  = $this->cats;
+            $this->categories = $this->loadData("categories", $catsRealation, "category");
+        }
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -69,4 +94,13 @@ class Jobs extends \yii\db\ActiveRecord
     {
         return $this->hasMany(JobsCatsRelation::className(), ['jobs_idjobs' => 'idjobs']);
     }
+
+    public function getCats()
+    {
+        //https://stackoverflow.com/questions/26763298/how-do-i-work-with-many-to-many-relations-in-yii2
+        //http://www.yiiframework.com/doc-2.0/guide-db-active-record.html
+        return $this->hasMany(JobsCategories::className(), ['idjobs_categories' => 'jobs_idcats'])
+            ->viaTable('jobs_cats_relation', ['jobs_idjobs' => 'idjobs']);
+    }
+
 }

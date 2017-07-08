@@ -103,7 +103,7 @@ class Resume extends \yii\db\ActiveRecord
             $workRelation = $this->resumeWorks;
             $this->educationName = $this->loadData("educationName", $resumeRelation, "education_name");
             $this->faculty = $this->loadData("faculty", $resumeRelation, "faculty");
-            $this->companyName = $this->loadData("description", $workRelation, "company_name");
+            $this->companyName = $this->loadData("companyName", $workRelation, "company_name");
             $this->description = $this->loadData("description", $workRelation, "description");
             $this->dateJobTo = $this->loadData("dateJobTo", $workRelation, "date_job", [' ', 0]);
             $this->dateJobFrom = $this->loadData("dateJobFrom", $workRelation, "date_job", [' ', 1]);

@@ -29,11 +29,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'description:ntext',
             'location',
-            // 'salary',
+            'salary',
             // 'uid',
-            // 'created_at',
-            // 'updated_at',
-            // 'address:ntext',
+            'created_at:date',
+            'updated_at:date',
+            'address:ntext',
+            ['attribute' => 'categories',
+                'label' => 'Categories',
+                'contentOptions' => function ($model, $key, $index, $column) {
+                    return ['class' => 'name'];
+                },
+                'content' => function ($data) {
+                    return implode(' , ', $data->categories);
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

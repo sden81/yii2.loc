@@ -74,6 +74,17 @@ class JobsController extends Controller
         }
     }
 
+    public function actionTest()
+    {
+        $model = Jobs::findOne(2);
+        echo $model->company_name;
+        /*
+        foreach ($model->company_name as $v)
+        {
+            print_r($v->attributes);
+        }*/
+    }
+
     /**
      * Updates an existing Jobs model.
      * If update is successful, the browser will be redirected to the 'view' page.
