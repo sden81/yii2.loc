@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return ['class' => 'name'];
                 },
                 'content' => function ($data) {
-                    return implode(' , ', $data->categories);
+                    return implode(' , ', $data->checkedCategoryNames);
                 }
             ],
 

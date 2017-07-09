@@ -35,9 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'location',
             'salary',
             'uid',
-            'created_at',
-            'updated_at',
+            'created_at:date',
+            'updated_at:date',
             'address:ntext',
+            ['attribute' => 'categories',
+                'label' => 'Categories',
+                'value' => implode(' , ', $model->checkedCategoryNames),
+            ],
         ],
     ]) ?>
 

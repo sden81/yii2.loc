@@ -13,22 +13,22 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'company_name')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
     <?= $form->field($model, 'location')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'salary')->textInput() ?>
-
     <?= $form->field($model, 'uid')->textInput() ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+    <?= "Create date:  ".date("Y-m-d H:i:s", $model->created_at) ?>
+    <br>
+    <?= "Update date:  ".date("Y-m-d H:i:s", $model->updated_at) ?>
+    <br>
+    <br>
 
     <?= $form->field($model, 'address')->textarea(['rows' => 6]) ?>
+
+    <?php $model->checkedCategoriesId = $model->getCatsIdObjects(); ?>
+    <?= $form->field($model, 'checkedCategoriesId')->checkboxList($model->getAllCategories()) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

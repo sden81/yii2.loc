@@ -41,4 +41,10 @@ class JobsCategories extends \yii\db\ActiveRecord
             'category' => Yii::t('app', 'Category'),
         ];
     }
+
+    public function getJobs(){
+        return $this->hasMany(Jobs::className(), ['idjobs' => 'jobs_idjobs'])
+            ->viaTable('jobs_cats_relation', ['jobs_idcats' => 'idjobs_categories']);
+    }
+
 }
