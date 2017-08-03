@@ -2,10 +2,13 @@
 namespace common\models;
 
 use Yii;
+use yii\base\Event;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
+use yii\imagine\Image;
 
 /**
  * User model
@@ -25,7 +28,9 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
-
+    const SCENARIO_PROFILE = 'profile';
+    protected $_avatar;
+    const  EVENT_IMAGE_UPLOADED = 'image_uploaded';
 
     /**
      * @inheritdoc
@@ -54,6 +59,63 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_PROFILE] = ['email', 'username', 'birth', 'avatar'];
+        return $scenarios;
+    }
+
+    public function setAvatar($value)
+    {
+        $this->_avatar = $value;
+    }
+
+    public function getAvatar()
+    {
+        return $this->_avatar;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        $file = UploadedFile::getInstance($this, 'avatar');
+        if ($file) {
+            $fileName = $this->id . ".jpg";
+            $filePath = Yii::getAlias("@avatarPath". "/" . $fileName);
+            if ($file->saveAs($filePath)) {
+                self::updateAll(['updated_at' => time()], 'id=:id', [':id' => Yii::$app->user->id]);
+                $this->on(self::EVENT_IMAGE_UPLOADED, [$this, 'processImage']);
+                $eventImage = (new class extends Event
+                {
+                    public $fileData;
+                }
+                );
+                $eventImage->fileData = ['name' => $fileName];
+                $this->trigger(self::EVENT_IMAGE_UPLOADED, $eventImage);
+            }
+        }
+    }
+
+    public function processImage($event){
+        $file = $event->fileData;
+        $name = $file['name'];
+        $path = Yii::getAlias('@avatarPath');
+        $srcName = $path."/".$name;
+        $dsName = $path . "/thumb".$name;
+        Image::thumbnail($srcName, 100, 100)
+            ->save($dsName, ['quality' => 80]);
+    }
+
+    public function getAvatarPath()
+    {
+        $fileName = $this->id . ".jpg";
+        $path = Yii::getAlias("@avatarPath") . "/" . $fileName;
+        $url = Yii::getAlias("@avatarUrl") . "/thumb" . $fileName;
+
+        return (file_exists($path)) ? $url : '';
     }
 
     /**
@@ -113,7 +175,7 @@ class User extends ActiveRecord implements IdentityInterface
             return false;
         }
 
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $timestamp = (int)substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
     }

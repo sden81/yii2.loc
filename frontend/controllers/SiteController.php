@@ -1,6 +1,8 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Auth;
+use frontend\components\AuthHandler;
 use frontend\models\AdvancedJobForm;
 use frontend\models\FindJobForm;
 use Yii;
@@ -63,6 +65,10 @@ class SiteController extends Controller
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'onAuthSuccess'],
+            ]
         ];
     }
 
@@ -117,8 +123,10 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         } else {
+            $authRenderer = Auth::$authRenderLink;
             return $this->render('login', [
                 'model' => $model,
+                'authRenderer' => $authRenderer,
                 'modelPasswordReset' => $modelPasswordReset,
             ]);
         }
@@ -133,6 +141,10 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
         return $this->goHome();
+    }
+
+    public function onAuthSuccess($client){
+        (new AuthHandler($client))->handle();
     }
 
     public function actionFind()

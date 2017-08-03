@@ -44,11 +44,12 @@
                 } else { ?>
                     <li class="dropdown">
                         <a href="#" class="link-profile dropdown-toggle"  data-toggle="dropdown" >
-                            <img src="/images/people/4.jpg"  alt="" class="img-profile"> <?= Yii::$app->user->identity->username ?> <b class="caret"></b>
+                            <img src="<?= Yii::$app->user->identity->avatarPath ?>"  alt="" class="img-profile"> <?= Yii::$app->user->identity->username ?> <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="<?= \yii\helpers\url::toRoute("/cabinet/jobs") ?>" > My Jobs </a></li>
                             <li><a href="<?= \yii\helpers\url::toRoute("/cabinet/resume") ?>" > My Resumes </a></li>
+                            <li><a href="<?= \yii\helpers\url::toRoute("/cabinet/default/profile") ?>" > Profile </a></li>
                             <li><a href="change_password.html" > Change Password</a></li>
                         </ul>
                     </li>

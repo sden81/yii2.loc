@@ -28,12 +28,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'company_name',
             'title',
             'description:ntext',
-            'location',
-            'salary',
+            //'location',
+            //'salary',
             // 'uid',
-            'created_at:date',
-            'updated_at:date',
-            'address:ntext',
+            //'created_at:date',
+            [
+                'attribute' => 'created_at',
+                'content' => function ($data){
+                    return date("Y-m-d",$data->created_at);
+                },
+                'filter'=> \yii\jui\DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute'=>'created_at',
+                    'dateFormat' =>'yyyy-MM-dd',
+                    'options'=>['class'=>'form-control']
+                ]),
+            ],
+
+            //'updated_at:date',
+            //'address:ntext',
             ['attribute' => 'categories',
                 'label' => 'Categories',
                 'contentOptions' => function ($model, $key, $index, $column) {

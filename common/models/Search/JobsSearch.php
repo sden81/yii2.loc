@@ -18,7 +18,8 @@ class JobsSearch extends Jobs
     public function rules()
     {
         return [
-            [['idjobs', 'salary', 'uid', 'created_at', 'updated_at'], 'integer'],
+            [['idjobs', 'salary', 'uid', 'updated_at'], 'integer'],
+            ['created_at', 'date', 'format' => 'php:Y-m-d'],
             [['company_name', 'title', 'description', 'location', 'address'], 'safe'],
         ];
     }
@@ -62,9 +63,9 @@ class JobsSearch extends Jobs
             'idjobs' => $this->idjobs,
             'salary' => $this->salary,
             'uid' => $this->uid,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ]);
+
+        $query->andFilterWhere(["DATE(FROM_UNIXTIME('created_at'))" => $this->created_at]);
 
         $query->andFilterWhere(['like', 'company_name', $this->company_name])
             ->andFilterWhere(['like', 'title', $this->title])
